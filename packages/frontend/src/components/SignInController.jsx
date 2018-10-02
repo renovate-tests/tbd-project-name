@@ -85,21 +85,23 @@ class SignInController extends Component {
       console.log(res); // check if data is a success
       if (res.succcess) {
         this.setState({ signupStatus: signupStatusEnums.ok });
-      } else {
-        // username must be taken
-        this.setState({ signupStatus: signupStatusEnums.username_taken });
+        return 0;
       }
+      // username must be taken
+      this.setState({ signupStatus: signupStatusEnums.username_taken });
+      return -3;
     } catch (e) {
       this.setState({ signupStatus: signupStatusEnums.connection_error });
+      return -2;
     }
   };
 
   doSignup = (username, pass1, pass2, accountType) => {
     if (pass1.localeCompare(pass2) !== 0) {
       this.setState({ signupStatus: signupStatusEnums.password_mismatch });
-    } else {
-      this.sendSignupRequest(username, pass1, accountType);
+      return -1;
     }
+    return this.sendSignupRequest(username, pass1, accountType);
   };
 
   render() {
